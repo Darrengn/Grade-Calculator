@@ -102,7 +102,6 @@ public class Calculator {
      */
     public static void main(String[] args) {
 		Calculator cal = new Calculator();
-        System.out.println("\n\n\n\n");
         cal.fill();
         System.out.println("\n\n\n\n");
         if(cal.grades.size() == 0) {
