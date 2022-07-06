@@ -5,7 +5,7 @@ public class Calculator {
 	
     private ArrayList<Grade> grades;
     private final String BREAKDOWN_STR = "Input the percentage of your grade that this section is worth.\nFor example, if you want to put homework as 5%, enter the number 5.\nType DONE to get your grade in the class.";
-    private final String VAL_STR = "Input your current grade in this section.\nIf you have a 95%, enter 95";
+    private final String VAL_STR = "Input your current grade in this section.\nIf you have a 95%, enter 95.\nCan also enter 5/10 for 50%";
 
     public Calculator(){
         grades = new ArrayList<>();
@@ -23,10 +23,12 @@ public class Calculator {
         input = scan.nextLine();
         //loop to get all the breakdowns
         while(!input.equals("DONE")){
-            try {
-                breakdown = Double.parseDouble(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Invallid input"); 
+            breakdown = handleIn(input);
+            //check for valid input
+            if(breakdown == -1){
+                System.out.print("\n");
+                System.out.println("Invallid input");
+                System.out.print("\n"); 
                 System.out.println(BREAKDOWN_STR);
                 System.out.print("Input here: ");
                 input = scan.nextLine(); //get the new input and re enter main loop
@@ -38,15 +40,16 @@ public class Calculator {
             input = scan.nextLine();
             //loop until a valid grade is input
             while(true){
-                try {
-                    val = Double.parseDouble(input);
-                    break;
-                } catch(NumberFormatException e){
-                    System.out.println("Invallid input"); 
+                val = handleIn(input);
+                if(val == -1){
+                    System.out.print("\n");
+                    System.out.println("Invallid input");
+                    System.out.print("\n"); 
                     System.out.println(VAL_STR);
                     System.out.print("Input here: ");
                     input = scan.nextLine(); //get the new input and re enter main loop
-                    continue;
+                } else {
+                    break;
                 }
             }
             grades.add(new Grade(val, breakdown));
@@ -59,6 +62,35 @@ public class Calculator {
             System.out.print("Input here: ");
             input = scan.nextLine();
         }
+    }
+
+    public double handleIn(String in){
+        double out = 0;
+        int slshInd = in.indexOf('/');
+        String sub1, sub2;
+        if(slshInd == -1) {
+            try {
+                out = Double.parseDouble(in);
+            } catch(NumberFormatException e) {
+                return -1;
+            }
+        } else { //to handle fraction inputs
+            try{
+                //break the fraction into numerator and denominator
+                sub1 = in.substring(0, slshInd);
+                sub2 = in.substring(slshInd + 1, in.length());
+            } catch (IndexOutOfBoundsException e) {
+                return -1;
+            }
+            try {
+                double numerator = Double.parseDouble(sub1);
+                double denominator = Double.parseDouble(sub2);
+                out = numerator/denominator * 100;
+            } catch(NullPointerException e) {
+                return -1;
+            }
+        }
+        return out;
     }
 
     public double getGrade(){
@@ -107,7 +139,7 @@ public class Calculator {
         if(cal.grades.size() == 0) {
             System.out.println("No grades inputed");
         } else {
-            System.out.println("Final grade: " + cal.getGrade() + "%");
+            System.out.println("Current grade: " + cal.getGrade() + "%");
         }
         System.out.println("\n\n\n");
 	}
