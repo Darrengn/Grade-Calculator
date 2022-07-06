@@ -65,8 +65,8 @@ public class Calculator {
             System.out.println(BREAKDOWN_STR);
             System.out.print("Input here: ");
             input = scan.nextLine();
-            scan.close();
         }
+        scan.close();
     }
 
     /**
