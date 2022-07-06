@@ -3,70 +3,16 @@ import java.util.Scanner;
 
 public class Calculator {
 	
-    private ArrayList<Grade> grades;
-    private final String BREAKDOWN_STR = "Input the percentage of your grade that this section is worth.\nFor example, if you want to put homework as 5%, enter the number 5.\nType DONE to get your grade in the class.";
-    private final String VAL_STR = "Input your current grade in this section.\nIf you have a 95%, enter 95.\nCan also enter 5/10 for 50%";
+    protected ArrayList<Grade> grades;
+    protected final static String BREAKDOWN_STR = "Input the percentage of your grade that this section is worth.\nFor example, if you want to put homework as 5%, enter the number 5.\nType E to get your grade in the class.";
+    protected final static String VAL_STR = "Input your current grade in this section.\nIf you have a 95%, enter 95.\nCan also enter 5/10 for 50%";
+    protected final static String INPUT = "Input here: ";
 
     /**
      * default constructer, init the ArrayList
      */
     public Calculator(){
         grades = new ArrayList<>();
-    }
-    /**
-     * fill the arraylist of grades from the console
-     */
-    public void fill(){
-        Scanner scan = new Scanner(System.in);
-        String input; //the string to get from console
-        double breakdown, val;
-        System.out.println("\n\n");
-        System.out.println("Current grade calculator\n");
-        System.out.println(BREAKDOWN_STR);
-        System.out.print("Input here: ");
-        input = scan.nextLine();
-        //loop to get all the breakdowns
-        while(!input.equals("DONE")){
-            breakdown = handleIn(input);
-            //check for valid input
-            if(breakdown < 0){
-                System.out.print("\n");
-                System.out.println("Invallid input");
-                System.out.print("\n"); 
-                System.out.println(BREAKDOWN_STR);
-                System.out.print("Input here: ");
-                input = scan.nextLine(); //get the new input and re enter main loop
-                continue;
-            }
-            System.out.println("\n\n");
-            System.out.println(VAL_STR);
-            System.out.print("Input here: ");
-            input = scan.nextLine();
-            //loop until a valid grade is input
-            while(true){
-                val = handleIn(input);
-                if(val < 0){
-                    System.out.print("\n");
-                    System.out.println("Invallid input");
-                    System.out.print("\n"); 
-                    System.out.println(VAL_STR);
-                    System.out.print("Input here: ");
-                    input = scan.nextLine(); //get the new input and re enter main loop
-                } else {
-                    break;
-                }
-            }
-            grades.add(new Grade(val, breakdown));
-            //print out what was entered to the List
-            System.out.println("\n\n");
-            System.out.print("Breakdown: " + breakdown + "% \nGrade: " + val + "%");
-            System.out.println("\n\n");
-            //prep to go back into main loop
-            System.out.println(BREAKDOWN_STR);
-            System.out.print("Input here: ");
-            input = scan.nextLine();
-        }
-        scan.close();
     }
 
     /**
@@ -75,7 +21,7 @@ public class Calculator {
      * @param in the input string
      * @return the percent (90 is 90%) returns -1 if err
      */
-    public double handleIn(String in){
+    public static double handleIn(String in){
         double out = 0;
         int slshInd = in.indexOf('/');
         String sub1, sub2;
@@ -105,6 +51,13 @@ public class Calculator {
     }
 
     /**
+     * prints a new empty line
+     */
+    public static void newLn(){
+        System.out.print("\n");
+    }
+
+    /**
      * calculate the current grade in the class
      * @return the current grade (90% is 90)
      */
@@ -116,70 +69,7 @@ public class Calculator {
             grade += grades.get(i).getBreakdown() * grades.get(i).getVal();
         }
         return grade/totalBreak;
-    }
-    /**
-     * function to print and calculate needed grade on final for 
-     * desired overall grade
-     */
-    public void finalCalc(){
-        Scanner scan = new Scanner(System.in);
-        String input; //the string to get from console
-        double curGrade, finalPer, wantGrd;
-        System.out.println("\n\n");
-        System.out.println("Final grade calculator\n");
-        //get current grade
-        while(true) {
-            System.out.println("\n\n");
-            System.out.println("What is your current grade? Enter 90 for 90%");
-            System.out.print("Input: ");
-            input = scan.nextLine();
-            curGrade = handleIn(input);
-            if(curGrade < 0) {
-                System.out.print("\n");
-                System.out.println("Invallid input");
-                System.out.print("\n");
-            } else {
-                break;
-            }
-        }
-        
-        //get final percent
-        while(true) {
-            System.out.println("\n\n");
-            System.out.println("What percent of your total grade is your final worth? Enter 90 for 90%");
-            System.out.print("Input: ");
-            input = scan.nextLine();
-            finalPer = handleIn(input);
-            if(finalPer < 0 || finalPer > 100) {
-                System.out.print("\n");
-                System.out.println("Invallid input");
-                System.out.print("\n");
-            } else {
-                break;
-            }
-        }
-
-        //get desired grade
-        while(true) {
-            System.out.println("\n\n");
-            System.out.println("What is your desired overall grade? Enter 90 for 90%");
-            System.out.print("Input: ");
-            input = scan.nextLine();
-            wantGrd = handleIn(input);
-            if(wantGrd < 0) {
-                System.out.print("\n");
-                System.out.println("Invallid input");
-                System.out.print("\n");
-            } else {
-                break;
-            }
-        }
-        scan.close();
-        //start calculations
-        double curVal = (100 - finalPer)/100 * curGrade;
-        curVal = (wantGrd - curVal)/finalPer * 100;
-        System.out.println("\nNeeded final grade: " + curVal + "%\n\n");
-    }
+    }  
 
     /**
      * class that holds the score and percentage of overall grade
@@ -218,37 +108,38 @@ public class Calculator {
      * Main function for calculator
      */
     public static void main(String[] args) {
-		Calculator cal = new Calculator();
         Scanner in = new Scanner(System.in);
         String input;
         System.out.println("Welcome to Darren's grade calculator!");
-        System.out.print("\n");
+        newLn();
         while(true) {
-            System.out.println("Choose mode. Type FINAL for final grade calculator, CURRENT for curent grade calculator, or DONE to exit");
-            System.out.print("Input: ");
+            System.out.println("Choose mode. Type F for final grade calculator, C for curent grade calculator, or E to exit");
+            newLn();
+            System.out.print(Calculator.INPUT);
             input = in.nextLine();
-            if(input.equals("FINAL")){
-                cal.finalCalc();
+            if(input.equals("F")){
+                FinalCalculator finCal = new FinalCalculator();
+                finCal.finalCalc();
                 break;
-            } else if(input.equals("CURRENT")){
-                cal.fill();
-                System.out.println("\n\n\n\n");
-                if(cal.grades.size() == 0) {
+            } else if(input.equals("C")){
+                CurrentCalculator curCal = new CurrentCalculator();
+                curCal.fill();
+                newLn();
+                if(curCal.grades.size() == 0) {
                     System.out.println("No grades inputed");
                 } else {
-                    System.out.println("Current grade: " + cal.getGrade() + "%");
+                    System.out.println("Current grade: " + curCal.getGrade() + "%");
                 }
-                System.out.println("\n\n\n");
+                newLn();
                 break;
-            } else if(input.equals("DONE")){
+            } else if(input.equals("E")){
                 break;
             } else {
-                System.out.print("\n");
+                newLn();
                 System.out.println("Invalid Input");
-                System.out.print("\n");
+                newLn();
             }
         }
         in.close();
 	}
-
 }
