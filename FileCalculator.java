@@ -47,13 +47,15 @@ public class FileCalculator extends Calculator{
         File file = new File(fileName);
         if(file.exists()) {
             newLn();
-            System.out.println("Are you adding grades? N for no");
+            System.out.println("What would you like to do with this file? C to calculate grade, D to delete the file, anything else to add grades.");
             newLn();
             System.out.print(INPUT);
             confirm = scan.nextLine();
-            if(confirm.equals("N")) {
+            if(confirm.equals("C")) {
                 readFile(file);
                 calcGrade();
+            } else if(confirm.equals("D")){
+                file.delete();
             } else {
                 readFile(file);
                 newGrades();
