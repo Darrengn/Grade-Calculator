@@ -1,12 +1,15 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//javac Calculator.java CurrentCalculator.java FinalCalculator.java FileCalculator.java Fraction.java
+
 public class Calculator {
 	
     protected ArrayList<Grade> grades;
     protected final static String BREAKDOWN_STR = "Input the percentage of your grade that this section is worth.\nFor example, if you want to put homework as 5%, enter the number 5.\nType E to get your grade in the class.";
     protected final static String VAL_STR = "Input your current grade in this section.\nIf you have a 95%, enter 95.\nCan also enter 5/10 for 50%";
     protected final static String INPUT = "Input here: ";
+    protected Scanner scan;
 
     /**
      * default constructer, init the ArrayList
@@ -113,7 +116,7 @@ public class Calculator {
         System.out.println("Welcome to Darren's grade calculator!");
         newLn();
         while(true) {
-            System.out.println("Choose mode. Type F for final grade calculator, C for curent grade calculator, or E to exit");
+            System.out.println("Choose mode. Type F for final grade calculator, C for curent grade calculator, A for advanced calculator, or E to exit");
             newLn();
             System.out.print(Calculator.INPUT);
             input = in.nextLine();
@@ -131,6 +134,10 @@ public class Calculator {
                     System.out.println("Current grade: " + curCal.getGrade() + "%");
                 }
                 newLn();
+                break;
+            } else if(input.equals("A")){
+                FileCalculator fileCalc = new FileCalculator();
+                fileCalc.start();
                 break;
             } else if(input.equals("E")){
                 break;
