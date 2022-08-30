@@ -198,6 +198,9 @@ public class FileCalculator extends Calculator{
                     break;
                 }
             }
+            if(index == -1) {
+                continue;
+            }
             //loop to check if grade is correct format
             while(true) {
                 newLn();
